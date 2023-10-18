@@ -11,6 +11,7 @@ import java.util.List;
 @Table(name = "Usuarios")
 @Entity(name = "Usuario")
 @Getter
+@Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,16 +21,20 @@ public class Usuario implements UserDetails {
     private int id;
 
     private int turma;
-    private String edv, nome, senha;
-    private boolean ativo, instrutor;
+    private String edv, nome, senha, cor;
+    private boolean ativo;
 
     public Usuario(DadosCadastroUsuario dadosCadastroUsuario) {
         this.turma = dadosCadastroUsuario.turma();
         this.edv = dadosCadastroUsuario.edv();
         this.nome = dadosCadastroUsuario.nome();
         this.senha = dadosCadastroUsuario.senha();
+        this.cor = dadosCadastroUsuario.cor();
         this.ativo = true;
-        this.instrutor = dadosCadastroUsuario.instrutor();
+    }
+
+    public void desativar() {
+        this.ativo = false;
     }
 
     @Override
