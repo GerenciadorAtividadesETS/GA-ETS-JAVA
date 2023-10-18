@@ -3,7 +3,6 @@ package br.bosch.GAETS.controller;
 import br.bosch.GAETS.infra.security.DadosTokenJWT;
 import br.bosch.GAETS.infra.security.TokenService;
 import br.bosch.GAETS.model.usuario.DadosLogin;
-import br.bosch.GAETS.model.usuario.DadosUsuario;
 import br.bosch.GAETS.model.usuario.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,9 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid DadosLogin dadosLogin) {
+        System.out.println("O TOKEN: ");
         var token = new UsernamePasswordAuthenticationToken(dadosLogin.edv(), dadosLogin.senha());
+//        System.out.println(token);
         var authentication = manager.authenticate(token);
         var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
         return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
