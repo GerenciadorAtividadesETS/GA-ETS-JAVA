@@ -1,0 +1,7 @@
+CREATE TABLE Materias(
+    id INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL UNIQUE,
+    cor VARCHAR(6) NOT NULL,
+
+    PRIMARY KEY(id)
+)

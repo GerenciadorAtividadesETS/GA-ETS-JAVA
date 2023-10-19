@@ -7,10 +7,12 @@ public record DadosRetornoUsuario(int id,
                                   String cor) {
 
     public DadosRetornoUsuario(Usuario usuario) {
-        this(usuario.getId(),
+        this(
+                usuario.getId(),
                 usuario.getTurma(),
                 usuario.getEdv(),
                 usuario.getNome(),
-                usuario.getCor());
+                usuario.getCor()
+        );
     }
 }
