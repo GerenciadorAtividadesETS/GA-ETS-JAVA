@@ -1,9 +1,6 @@
 package br.bosch.GAETS.controller;
 
-import br.bosch.GAETS.model.usuario.DadosCadastroUsuario;
-import br.bosch.GAETS.model.usuario.DadosRetornoUsuario;
-import br.bosch.GAETS.model.usuario.Usuario;
-import br.bosch.GAETS.model.usuario.UsuarioRepository;
+import br.bosch.GAETS.model.usuario.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,8 +39,14 @@ public class UsuarioController {
         return ResponseEntity.ok(new DadosRetornoUsuario(usuario));
     }
 
+    @GetMapping("/turmas")
+    public ResponseEntity<Page<DadosTurma>> listarTodasTurmas(Pageable pageable) {
+        var page = repository.findAllTurma(pageable).map(DadosTurma::new);
+        return ResponseEntity.ok(page);
+    }
+
     @GetMapping("/turmas/{turma}")
-    public ResponseEntity<Page<DadosRetornoUsuario>> listarPorTurma(@PathVariable int turma, @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable) {
+    public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int turma, @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable) {
         var page = repository.findAllByTurma(pageable, turma).map(DadosRetornoUsuario::new);
         return ResponseEntity.ok(page);
     }
@@ -54,6 +57,13 @@ public class UsuarioController {
         var usuario = repository.getByEdv(edv);
         usuario.desativar();
 
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/excluir/{edv}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable String edv) {
+        repository.deleteByEdv(edv);
         return ResponseEntity.noContent().build();
     }
 }
