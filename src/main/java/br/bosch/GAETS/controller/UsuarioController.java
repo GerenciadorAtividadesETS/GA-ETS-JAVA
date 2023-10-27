@@ -23,7 +23,7 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
         var senhaCriptografada = bCryptPasswordEncoder.encode(dadosCadastroUsuario.senha());
         var usuario = new Usuario(dadosCadastroUsuario);
         usuario.setSenha(senhaCriptografada);
@@ -34,7 +34,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{edv}")
-    public ResponseEntity detalhar(@PathVariable String edv) {
+    public ResponseEntity detalharUsuario(@PathVariable String edv) {
         var usuario = repository.getByEdv(edv);
         return ResponseEntity.ok(new DadosRetornoUsuario(usuario));
     }
@@ -46,14 +46,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/turmas/{turma}")
-    public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int turma, @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable) {
+    public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int turma, @PageableDefault(sort = {"nome"}) Pageable pageable) {
         var page = repository.findAllByTurma(pageable, turma).map(DadosRetornoUsuario::new);
         return ResponseEntity.ok(page);
     }
 
     @DeleteMapping("/{edv}")
     @Transactional
-    public ResponseEntity desativar(@PathVariable String edv) {
+    public ResponseEntity desativarUsuario(@PathVariable String edv) {
         var usuario = repository.getByEdv(edv);
         usuario.desativar();
 
@@ -62,7 +62,7 @@ public class UsuarioController {
 
     @DeleteMapping("/excluir/{edv}")
     @Transactional
-    public ResponseEntity excluir(@PathVariable String edv) {
+    public ResponseEntity excluirUsuario(@PathVariable String edv) {
         repository.deleteByEdv(edv);
         return ResponseEntity.noContent().build();
     }
