@@ -18,10 +18,11 @@ public class CadastrarAtividade {
     @Autowired
     private AtividadeRepository atividadeRepository;
 
-    public DadosRetornoAtividade cadastrar(DadosCadastroAtividade dadosCadastroAtividade, String edv) {
+    public DadosRetornoAtividade cadastrar(DadosCadastroAtividade dadosCadastroAtividade,
+                                           String edv) {
         var usuario = usuarioRepository.getByEdv(edv);
         // TESTAR DEPOIS TROCAR O FINDBY PELO GETREFERENCEBYID
-        var materia = materiaRepository.findById(dadosCadastroAtividade.idMateria()).get();
+        var materia = materiaRepository.getReferenceById(dadosCadastroAtividade.idMateria());
         var atividade = new Atividade(0, usuario, materia, dadosCadastroAtividade.turma(), dadosCadastroAtividade.titulo(), dadosCadastroAtividade.descricao(), LocalDateTime.now(), dadosCadastroAtividade.dataEntrega(), true);
         atividadeRepository.save(atividade);
 

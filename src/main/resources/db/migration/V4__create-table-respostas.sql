@@ -2,7 +2,6 @@ CREATE TABLE Respostas(
     id INT NOT NULL AUTO_INCREMENT,
     atividades_id INT NOT NULL,
     usuarios_id INT NOT NULL,
-    data_entrega DATETIME NOT NULL,
     data_alteracao DATETIME NOT NULL,
     compartilhado VARCHAR(255) NOT NULL,
     github VARCHAR(255),
