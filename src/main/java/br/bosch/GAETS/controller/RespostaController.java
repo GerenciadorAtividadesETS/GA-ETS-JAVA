@@ -56,7 +56,7 @@ public class RespostaController {
     public ResponseEntity listarRespostasPorMateria(@PathVariable int idMateria,
                                                     Pageable pageable) {
         var materia = materiaRepository.getReferenceById(idMateria);
-        var page = repository.findAllByMateria(pageable, materia).map(DadosRetornoRespostaId::new);
+        var page = repository.findAllByMateria(pageable, materia).map(DadosRetornoResposta::new);
         return ResponseEntity.ok(page);
     }
 }

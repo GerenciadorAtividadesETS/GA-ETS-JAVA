@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface RespostaRepository extends JpaRepository<Resposta, Integer> {
     @Query(
         """
@@ -23,7 +25,7 @@ public interface RespostaRepository extends JpaRepository<Resposta, Integer> {
     // FAZER ESSA QUERY FUNCIONAR NO WORKBENCH, PARECE QUE ELA ESTÁ RETORNANDO UM MONTE DE REGISTROS
     @Query(
         """
-            SELECT DISTINCT(r.id), a.id FROM Resposta r
+            SELECT r FROM Resposta r
             INNER JOIN r.atividade a
             WHERE
             a.materia = :materia
