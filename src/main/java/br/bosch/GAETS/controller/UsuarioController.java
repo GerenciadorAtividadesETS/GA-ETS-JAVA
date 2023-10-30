@@ -45,9 +45,9 @@ public class UsuarioController {
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping("/turmas/{turma}")
-    public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int turma, @PageableDefault(sort = {"nome"}) Pageable pageable) {
-        var page = repository.findAllByTurma(pageable, turma).map(DadosRetornoUsuario::new);
+    @GetMapping("/turmas/{idTurma}")
+    public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int idTurma, @PageableDefault(sort = {"nome"}) Pageable pageable) {
+        var page = repository.findAllByTurma(pageable, idTurma).map(DadosRetornoUsuario::new);
         return ResponseEntity.ok(page);
     }
 

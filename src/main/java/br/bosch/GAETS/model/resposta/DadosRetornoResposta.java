@@ -2,7 +2,7 @@ package br.bosch.GAETS.model.resposta;
 
 import java.time.LocalDateTime;
 
-public record DadosRetornoResposta(int id,
+public record DadosRetornoResposta(Integer id,
                                    int idAtividade,
                                    int idUsuario,
                                    LocalDateTime dataAlteracao,

@@ -31,7 +31,7 @@ public class MateriaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosRetornoMateria>> listarMaterias(@PageableDefault(sort = {"nome"}) Pageable pageable) {
+    public ResponseEntity<Page<DadosRetornoMateria>> listarMaterias(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
         var page = repository.findAll(pageable).map(DadosRetornoMateria::new);
         return ResponseEntity.ok(page);
     }

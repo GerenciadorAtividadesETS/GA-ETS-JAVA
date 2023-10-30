@@ -4,12 +4,9 @@ import br.bosch.GAETS.model.atividade.AtividadeRepository;
 import br.bosch.GAETS.model.atividade.DadosCadastroAtividade;
 import br.bosch.GAETS.model.atividade.DadosRetornoAtividade;
 import br.bosch.GAETS.model.service.CadastrarAtividade;
-import br.bosch.GAETS.model.usuario.DadosRetornoUsuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,16 +37,16 @@ public class AtividadeController {
         return ResponseEntity.ok(new DadosRetornoAtividade(atividade));
     }
 
-    @GetMapping("/turmas/{turma}")
-    public ResponseEntity listarAtividadesPorTurma(@PathVariable int turma, Pageable pageable) {
-        var page = repository.findAllByTurma(pageable, turma).map(DadosRetornoAtividade:: new);
+    @GetMapping("/turmas/{idTurma}")
+    public ResponseEntity listarAtividadesPorTurma(@PathVariable int idTurma, Pageable pageable) {
+        var page = repository.findAllByTurma(pageable, idTurma).map(DadosRetornoAtividade::new);
         return ResponseEntity.ok(page);
     }
 
-    @DeleteMapping("/{atividade}")
+    @DeleteMapping("/{idAtividade}")
     @Transactional
-    public ResponseEntity excluirAtividade(@PathVariable int atividade) {
-        repository.deleteById(atividade);
+    public ResponseEntity excluirAtividade(@PathVariable int idAtividade) {
+        repository.deleteById(idAtividade);
         return ResponseEntity.noContent().build();
     }
 }
