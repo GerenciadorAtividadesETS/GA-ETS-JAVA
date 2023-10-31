@@ -21,8 +21,6 @@ public interface RespostaRepository extends JpaRepository<Resposta, Integer> {
     )
     Resposta findResposta(String edv, Atividade atividade);
 
-
-    // FAZER ESSA QUERY FUNCIONAR NO WORKBENCH, PARECE QUE ELA ESTÁ RETORNANDO UM MONTE DE REGISTROS
     @Query(
         """
             SELECT r FROM Resposta r
