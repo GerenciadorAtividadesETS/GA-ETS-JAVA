@@ -43,10 +43,10 @@ public class AtividadeController {
         return ResponseEntity.ok(page);
     }
 
-    @DeleteMapping("/{idAtividade}")
+    @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluirAtividade(@PathVariable int idAtividade) {
-        repository.deleteById(idAtividade);
+    public ResponseEntity excluirAtividade(@PathVariable int id) {
+        repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

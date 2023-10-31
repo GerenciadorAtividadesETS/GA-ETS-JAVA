@@ -30,4 +30,14 @@ public interface RespostaRepository extends JpaRepository<Resposta, Integer> {
         """
     )
     Page<Resposta> findAllByMateria(Pageable pageable, Materia materia);
+
+    @Query(
+        """
+            SELECT r FROM Resposta r
+            INNER JOIN r.atividade a
+            WHERE r.atividade = :atividade AND
+            a.turma = :idTurma
+        """
+    )
+    Page<Resposta> findAllByTurma(Pageable pageable, Atividade atividade, int idTurma);
 }

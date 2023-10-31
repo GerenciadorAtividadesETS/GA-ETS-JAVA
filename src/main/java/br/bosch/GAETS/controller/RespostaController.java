@@ -57,6 +57,24 @@ public class RespostaController {
                                                     Pageable pageable) {
         var materia = materiaRepository.getReferenceById(idMateria);
         var page = repository.findAllByMateria(pageable, materia).map(DadosRetornoRespostaId::new);
+
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/atividades/{idAtividade}/turmas/{idTurma}")
+    public ResponseEntity listarRespostasPorTurma(@PathVariable int idAtividade,
+                                                  @PathVariable int idTurma,
+                                                  Pageable pageable) {
+        var atividade = atividadeRepository.getReferenceById(idAtividade);
+        var page = repository.findAllByTurma(pageable, atividade, idTurma).map(DadosRetornoResposta::new);
+
+        return ResponseEntity.ok(page);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluirResposta(@PathVariable int id) {
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
