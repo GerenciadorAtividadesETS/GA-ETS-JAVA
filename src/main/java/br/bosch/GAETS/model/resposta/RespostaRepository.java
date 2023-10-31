@@ -13,10 +13,7 @@ public interface RespostaRepository extends JpaRepository<Resposta, Integer> {
     @Query(
         """
             SELECT r FROM Resposta r
-            INNER JOIN r.usuario u
-            WHERE
-            r.atividade = :atividade AND
-            u.edv = :edv
+            WHERE r.atividade = :atividade AND r.usuario.edv = :edv
         """
     )
     Resposta findResposta(String edv, Atividade atividade);

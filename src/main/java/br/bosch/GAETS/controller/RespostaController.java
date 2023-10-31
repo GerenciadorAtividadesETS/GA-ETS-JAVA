@@ -45,8 +45,9 @@ public class RespostaController {
     }
 
 
-    @GetMapping("/{idAtividade}")
-    public ResponseEntity detalharResposta(@PathVariable int idAtividade,
+    // TROCAR PARA QUERY PARAMETER
+    @GetMapping
+    public ResponseEntity detalharResposta(@RequestParam(name = "atividade") int idAtividade,
                                            Authentication authentication) {
         String edv = authentication.getName();
         var atividade = atividadeRepository.getReferenceById(idAtividade);
@@ -56,6 +57,7 @@ public class RespostaController {
     }
 
 
+    // QUANDO O USUÁRIO TEM MAIS DE UMA RESPOSTA CADASTRADA PARA A MESMA ATIVIDADE, DÁ ERRO. PRECISA FAZER UM TRATAMENTO DE ERRO.
     @GetMapping("/materias/{idMateria}")
     public ResponseEntity listarRespostasPorMateria(@PathVariable int idMateria,
                                                     Pageable pageable) {
