@@ -32,6 +32,8 @@ public class RespostaController {
     @Autowired
     private MateriaRepository materiaRepository;
 
+
+    // ENDPOINTS
     @PostMapping
     @Transactional
     public ResponseEntity cadastrarResposta(@RequestBody @Valid DadosCadastroResposta dadosCadastroResposta,
@@ -42,15 +44,17 @@ public class RespostaController {
         return ResponseEntity.ok(resposta);
     }
 
+
     @GetMapping("/{idAtividade}")
     public ResponseEntity detalharResposta(@PathVariable int idAtividade,
-                                            Authentication authentication) {
+                                           Authentication authentication) {
         String edv = authentication.getName();
         var atividade = atividadeRepository.getReferenceById(idAtividade);
         var resposta = repository.findResposta(edv, atividade);
 
         return ResponseEntity.ok(new DadosRetornoResposta(resposta));
     }
+
 
     @GetMapping("/materias/{idMateria}")
     public ResponseEntity listarRespostasPorMateria(@PathVariable int idMateria,
@@ -61,6 +65,7 @@ public class RespostaController {
         return ResponseEntity.ok(page);
     }
 
+
     @GetMapping("/atividades/{idAtividade}/turmas/{idTurma}")
     public ResponseEntity listarRespostasPorTurma(@PathVariable int idAtividade,
                                                   @PathVariable int idTurma,
@@ -70,6 +75,7 @@ public class RespostaController {
 
         return ResponseEntity.ok(page);
     }
+
 
     @DeleteMapping("/{id}")
     @Transactional

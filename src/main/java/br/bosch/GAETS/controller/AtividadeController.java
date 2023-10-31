@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/atividades")
 public class AtividadeController {
+
     @Autowired
     private AtividadeRepository repository;
 
     @Autowired
     private CadastrarAtividade cadastrarAtividade;
 
+
+    // ENDPOINTS
     @PostMapping
     @Transactional
     public ResponseEntity cadastrarAtividade(@RequestBody @Valid DadosCadastroAtividade dadosCadastroAtividade,
@@ -31,17 +34,20 @@ public class AtividadeController {
         return ResponseEntity.ok(atividade);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity detalharAtividade(@PathVariable int id) {
         var atividade = repository.getReferenceById(id);
         return ResponseEntity.ok(new DadosRetornoAtividade(atividade));
     }
 
+
     @GetMapping("/turmas/{idTurma}")
     public ResponseEntity listarAtividadesPorTurma(@PathVariable int idTurma, Pageable pageable) {
         var page = repository.findAllByTurma(pageable, idTurma).map(DadosRetornoAtividade::new);
         return ResponseEntity.ok(page);
     }
+
 
     @DeleteMapping("/{id}")
     @Transactional

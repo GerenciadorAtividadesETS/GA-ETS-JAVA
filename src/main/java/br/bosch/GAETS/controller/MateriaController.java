@@ -44,7 +44,7 @@ public class MateriaController {
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity excluirMateria(@RequestParam String nome) {
+    public ResponseEntity excluirMateria(@RequestParam(name = "nome") String nome) {
         repository.deleteByNome(nome);
         return ResponseEntity.noContent().build();
     }
