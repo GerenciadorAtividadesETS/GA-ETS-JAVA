@@ -13,57 +13,58 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/usuarios")
 public class UsuarioController {
+
     @Autowired
     private UsuarioRepository repository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @PostMapping
+
+    // ENDPOINTS
+    @RequestMapping(value = "/usuarios", method=RequestMethod.POST)
     @Transactional
-    public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dadosCadastroUsuario,
+                                           UriComponentsBuilder uriComponentsBuilder) {
         var senhaCriptografada = bCryptPasswordEncoder.encode(dadosCadastroUsuario.senha());
         var usuario = new Usuario(dadosCadastroUsuario);
+        var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         usuario.setSenha(senhaCriptografada);
         repository.save(usuario);
 
-        var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosRetornoUsuario(usuario));
     }
 
-    @GetMapping("/{edv}")
-    public ResponseEntity detalharUsuario(@PathVariable String edv) {
+
+    @RequestMapping(value = "/usuarios", method = RequestMethod.GET)
+    public ResponseEntity detalharUsuario(@RequestParam("edv") String edv) {
         var usuario = repository.getByEdv(edv);
         return ResponseEntity.ok(new DadosRetornoUsuario(usuario));
     }
 
-    @GetMapping("/turmas")
-    public ResponseEntity<Page<DadosTurma>> listarTodasTurmas(Pageable pageable) {
-        var page = repository.findAllTurma(pageable).map(DadosTurma::new);
+
+    @RequestMapping(value = "/turmas", method=RequestMethod.GET)
+    public ResponseEntity<Page<DadosRetornoTurma>> listarTodasTurmas(Pageable pageable) {
+        var page = repository.findAllTurma(pageable).map(DadosRetornoTurma::new);
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping("/turmas/{idTurma}")
-    public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int idTurma, @PageableDefault(sort = {"nome"}) Pageable pageable) {
+
+    @RequestMapping(value = "/turmas/{idTurma}", method=RequestMethod.GET)
+    public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int idTurma,
+                                                                            @PageableDefault(sort = {"nome"}) Pageable pageable) {
         var page = repository.findAllByTurma(pageable, idTurma).map(DadosRetornoUsuario::new);
         return ResponseEntity.ok(page);
     }
 
-    @DeleteMapping("/{edv}")
+
+    @RequestMapping(value = "/usuarios", method=RequestMethod.DELETE)
     @Transactional
-    public ResponseEntity desativarUsuario(@PathVariable String edv) {
+    public ResponseEntity desativarUsuario(@RequestParam("edv") String edv) {
         var usuario = repository.getByEdv(edv);
         usuario.desativar();
 
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping("/excluir/{edv}")
-    @Transactional
-    public ResponseEntity excluirUsuario(@PathVariable String edv) {
-        repository.deleteByEdv(edv);
         return ResponseEntity.noContent().build();
     }
 }

@@ -17,12 +17,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/materias")
 public class MateriaController {
+
     @Autowired
     private MateriaRepository repository;
 
+
+    // ENDPOINTS
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrarMateria(@RequestBody @Valid DadosCadastroMateria dadosCadastroMateria, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity cadastrarMateria(@RequestBody @Valid DadosCadastroMateria dadosCadastroMateria,
+                                           UriComponentsBuilder uriComponentsBuilder) {
         var materia = new Materia(dadosCadastroMateria);
         var uri = uriComponentsBuilder.path("/materias/{id}").buildAndExpand(materia.getId()).toUri();
         repository.save(materia);
@@ -30,15 +34,17 @@ public class MateriaController {
         return ResponseEntity.created(uri).body(new DadosRetornoMateria(materia));
     }
 
+
     @GetMapping
     public ResponseEntity<Page<DadosRetornoMateria>> listarMaterias(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
         var page = repository.findAll(pageable).map(DadosRetornoMateria::new);
         return ResponseEntity.ok(page);
     }
 
-    @DeleteMapping("/{nome}")
+
+    @DeleteMapping
     @Transactional
-    public ResponseEntity excluirMateria(@PathVariable String nome) {
+    public ResponseEntity excluirMateria(@RequestParam String nome) {
         repository.deleteByNome(nome);
         return ResponseEntity.noContent().build();
     }
