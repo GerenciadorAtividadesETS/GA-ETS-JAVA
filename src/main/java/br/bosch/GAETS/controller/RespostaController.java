@@ -45,7 +45,6 @@ public class RespostaController {
     }
 
 
-    // TROCAR PARA QUERY PARAMETER
     @GetMapping
     public ResponseEntity detalharResposta(@RequestParam(name = "atividade") int idAtividade,
                                            Authentication authentication) {
