@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     UserDetails findByEdv(String edv);
     Usuario getByEdv(String edv);
+
     void deleteByEdv(String edv);
 
     @Query(
@@ -23,6 +24,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query(
         """
             SELECT DISTINCT(u.turma) FROM Usuario u
+            WHERE
+            u.turma != 0
         """
     )
     Page<Integer> findAllTurma(Pageable pageable);

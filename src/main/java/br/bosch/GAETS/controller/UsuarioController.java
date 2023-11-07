@@ -1,5 +1,6 @@
 package br.bosch.GAETS.controller;
 
+import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,9 @@ public class UsuarioController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private ValidarUsuarioInstrutor validarUsuarioInstrutor;
 
 
     // ENDPOINTS
@@ -38,14 +43,17 @@ public class UsuarioController {
 
 
     @RequestMapping(value = "/usuarios", method = RequestMethod.GET)
-    public ResponseEntity detalharUsuario(@RequestParam("edv") String edv) {
-        var usuario = repository.getByEdv(edv);
+    public ResponseEntity detalharUsuario(Authentication authentication) {
+        var usuario = repository.getByEdv(authentication.getName());
         return ResponseEntity.ok(new DadosRetornoUsuario(usuario));
     }
 
 
     @RequestMapping(value = "/turmas", method=RequestMethod.GET)
-    public ResponseEntity<Page<DadosRetornoTurma>> listarTodasTurmas(Pageable pageable) {
+    public ResponseEntity<Page<DadosRetornoTurma>> listarTodasTurmas(Pageable pageable,
+                                                                     Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         var page = repository.findAllTurma(pageable).map(DadosRetornoTurma::new);
         return ResponseEntity.ok(page);
     }
@@ -53,7 +61,10 @@ public class UsuarioController {
 
     @RequestMapping(value = "/turmas/{idTurma}", method=RequestMethod.GET)
     public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int idTurma,
-                                                                            @PageableDefault(sort = {"nome"}) Pageable pageable) {
+                                                                            @PageableDefault(sort = {"nome"}) Pageable pageable,
+                                                                            Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         var page = repository.findAllByTurma(pageable, idTurma).map(DadosRetornoUsuario::new);
         return ResponseEntity.ok(page);
     }
@@ -61,7 +72,10 @@ public class UsuarioController {
 
     @RequestMapping(value = "/usuarios", method=RequestMethod.DELETE)
     @Transactional
-    public ResponseEntity desativarUsuario(@RequestParam("edv") String edv) {
+    public ResponseEntity desativarUsuario(@RequestParam("edv") String edv,
+                                           Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         var usuario = repository.getByEdv(edv);
         usuario.desativar();
 

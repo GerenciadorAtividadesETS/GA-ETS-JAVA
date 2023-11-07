@@ -2,6 +2,7 @@ package br.bosch.GAETS.model.service.atividade;
 
 import br.bosch.GAETS.model.atividade.*;
 import br.bosch.GAETS.model.materia.MateriaRepository;
+import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,11 @@ public class CadastrarAtividade {
     private AtividadeRepository atividadeRepository;
 
     @Autowired
-    private List<ValidarCadastroAtividade> validadores;
+    private ValidarUsuarioInstrutor validarUsuarioInstrutor;
 
     public DadosRetornoAtividade cadastrar(DadosCadastroAtividade dadosCadastroAtividade, String edv) {
-        validadores.forEach(v -> v.validar(dadosCadastroAtividade, edv));
+        // VALIDAÇÃO DE USUÁRIO
+        validarUsuarioInstrutor.validar(edv);
 
         var usuario = usuarioRepository.getByEdv(edv);
         var materia = materiaRepository.getReferenceById(dadosCadastroAtividade.idMateria());

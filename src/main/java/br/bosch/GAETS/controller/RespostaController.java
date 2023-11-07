@@ -6,6 +6,7 @@ import br.bosch.GAETS.model.resposta.DadosCadastroResposta;
 import br.bosch.GAETS.model.resposta.DadosRetornoResposta;
 import br.bosch.GAETS.model.resposta.DadosRetornoRespostaId;
 import br.bosch.GAETS.model.resposta.RespostaRepository;
+import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.service.resposta.CadastrarResposta;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,16 @@ public class RespostaController {
     @Autowired
     private MateriaRepository materiaRepository;
 
+    @Autowired
+    private ValidarUsuarioInstrutor validarUsuarioInstrutor;
+
 
     // ENDPOINTS
     @PostMapping
     @Transactional
     public ResponseEntity cadastrarResposta(@RequestBody @Valid DadosCadastroResposta dadosCadastroResposta,
                                             Authentication authentication) {
-        var edv = authentication.getName();
-        var resposta = cadastrarResposta.cadastrar(dadosCadastroResposta, edv);
+        var resposta = cadastrarResposta.cadastrar(dadosCadastroResposta, authentication.getName());
 
         return ResponseEntity.ok(resposta);
     }
@@ -70,7 +73,10 @@ public class RespostaController {
     @GetMapping("/atividades/{idAtividade}/turmas/{idTurma}")
     public ResponseEntity listarRespostasPorTurma(@PathVariable int idAtividade,
                                                   @PathVariable int idTurma,
-                                                  Pageable pageable) {
+                                                  Pageable pageable,
+                                                  Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         var atividade = atividadeRepository.getReferenceById(idAtividade);
         var page = repository.findAllByTurma(pageable, atividade, idTurma).map(DadosRetornoResposta::new);
 

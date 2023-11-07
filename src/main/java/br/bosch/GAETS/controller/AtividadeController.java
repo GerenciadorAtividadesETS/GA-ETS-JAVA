@@ -3,6 +3,7 @@ package br.bosch.GAETS.controller;
 import br.bosch.GAETS.model.atividade.AtividadeRepository;
 import br.bosch.GAETS.model.atividade.DadosCadastroAtividade;
 import br.bosch.GAETS.model.atividade.DadosRetornoAtividade;
+import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.service.atividade.CadastrarAtividade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,17 @@ public class AtividadeController {
     @Autowired
     private CadastrarAtividade cadastrarAtividade;
 
+    @Autowired
+    private ValidarUsuarioInstrutor validarUsuarioInstrutor;
+
 
     // ENDPOINTS
     @PostMapping
     @Transactional
     public ResponseEntity cadastrarAtividade(@RequestBody @Valid DadosCadastroAtividade dadosCadastroAtividade,
                                     Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         var edv = authentication.getName();
         var atividade = cadastrarAtividade.cadastrar(dadosCadastroAtividade, edv);
 
@@ -51,7 +57,10 @@ public class AtividadeController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluirAtividade(@PathVariable int id) {
+    public ResponseEntity excluirAtividade(@PathVariable int id,
+                                           Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

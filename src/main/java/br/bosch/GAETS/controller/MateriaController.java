@@ -4,6 +4,7 @@ import br.bosch.GAETS.model.materia.DadosCadastroMateria;
 import br.bosch.GAETS.model.materia.DadosRetornoMateria;
 import br.bosch.GAETS.model.materia.Materia;
 import br.bosch.GAETS.model.materia.MateriaRepository;
+import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,18 @@ public class MateriaController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private ValidarUsuarioInstrutor validarUsuarioInstrutor;
+
 
     // ENDPOINTS
     @PostMapping
     @Transactional
     public ResponseEntity cadastrarMateria(@RequestBody @Valid DadosCadastroMateria dadosCadastroMateria,
-                                           UriComponentsBuilder uriComponentsBuilder) {
+                                           UriComponentsBuilder uriComponentsBuilder,
+                                           Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         var materia = new Materia(dadosCadastroMateria);
         var uri = uriComponentsBuilder.path("/materias/{id}").buildAndExpand(materia.getId()).toUri();
         repository.save(materia);
@@ -40,15 +47,11 @@ public class MateriaController {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity<Page<DadosRetornoMateria>> listarMaterias(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
-//        var page = materiaRepository.findAll(pageable).map(DadosRetornoMateria::new);
-//        return ResponseEntity.ok(page);
-//    }
-
     @GetMapping
     public ResponseEntity<Page<DadosRetornoMateria>> listarMateriasTurma(@PageableDefault(size = 10) Pageable pageable,
                                                                          Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         var usuario = usuarioRepository.getByEdv(authentication.getName());
         var page = repository.findAllByTurma(pageable, usuario.getTurma());
 
@@ -58,7 +61,10 @@ public class MateriaController {
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity excluirMateria(@RequestParam(name = "nome") String nome) {
+    public ResponseEntity excluirMateria(@RequestParam(name = "nome") String nome,
+                                         Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         repository.deleteByNome(nome);
         return ResponseEntity.noContent().build();
     }
