@@ -13,7 +13,9 @@ public interface RespostaRepository extends JpaRepository<Resposta, Integer> {
     @Query(
         """
             SELECT r FROM Resposta r
-            WHERE r.atividade = :atividade AND r.usuario.edv = :edv
+            WHERE
+            r.atividade = :atividade AND
+            r.usuario.edv = :edv
         """
     )
     Resposta findResposta(String edv, Atividade atividade);
@@ -32,7 +34,8 @@ public interface RespostaRepository extends JpaRepository<Resposta, Integer> {
         """
             SELECT r FROM Resposta r
             INNER JOIN r.atividade a
-            WHERE r.atividade = :atividade AND
+            WHERE
+            r.atividade = :atividade AND
             a.turma = :idTurma
         """
     )
