@@ -1,4 +1,4 @@
-package br.bosch.GAETS.model.service;
+package br.bosch.GAETS.model.service.resposta;
 
 import br.bosch.GAETS.model.atividade.AtividadeRepository;
 import br.bosch.GAETS.model.resposta.DadosCadastroResposta;
@@ -25,22 +25,16 @@ public class CadastrarResposta {
     @Autowired
     private List<ValidarCadastroResposta> validadores;
 
-    public DadosRetornoResposta cadastrar(DadosCadastroResposta dadosCadastroResposta,
-                                          String edv) {
+    public DadosRetornoResposta cadastrar(DadosCadastroResposta dadosCadastroResposta, String edv) {
+        if (!atividadeRepository.existsById(dadosCadastroResposta.idAtividade())) {
+            throw new RuntimeException("Atividade não existe");
+        }
+
         var usuario = usuarioRepository.getByEdv(edv);
         var atividade = atividadeRepository.getReferenceById(dadosCadastroResposta.idAtividade());
 
-
-//        validadores.forEach(v -> v.validar(dadosCadastroResposta));
-
-        System.out.println("ID DO USUÁRIO AQUI");
-        System.out.println("ID DO USUÁRIO AQUI");
-        System.out.println("ID DO USUÁRIO AQUI");
-        System.out.println(dadosCadastroResposta.idUsuario());
-        System.out.println(dadosCadastroResposta.idAtividade());
-        System.out.println(dadosCadastroResposta.github());
-        System.out.println(dadosCadastroResposta.compartilhado());
-        System.out.println(dadosCadastroResposta.comentario());
+        // VALIDAÇÃO REGRAS DE NEGÓCIO
+        validadores.forEach(v -> v.validar(dadosCadastroResposta, edv));
 
         var resposta = new Resposta(0, atividade, usuario, LocalDateTime.now(), dadosCadastroResposta.compartilhado(), dadosCadastroResposta.github(), dadosCadastroResposta.comentario());
         respostaRepository.save(resposta);

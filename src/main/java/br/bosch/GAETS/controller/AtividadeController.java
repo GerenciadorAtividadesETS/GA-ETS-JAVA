@@ -3,7 +3,7 @@ package br.bosch.GAETS.controller;
 import br.bosch.GAETS.model.atividade.AtividadeRepository;
 import br.bosch.GAETS.model.atividade.DadosCadastroAtividade;
 import br.bosch.GAETS.model.atividade.DadosRetornoAtividade;
-import br.bosch.GAETS.model.service.CadastrarAtividade;
+import br.bosch.GAETS.model.service.atividade.CadastrarAtividade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

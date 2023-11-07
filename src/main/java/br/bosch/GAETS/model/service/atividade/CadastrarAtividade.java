@@ -1,4 +1,4 @@
-package br.bosch.GAETS.model.service;
+package br.bosch.GAETS.model.service.atividade;
 
 import br.bosch.GAETS.model.atividade.*;
 import br.bosch.GAETS.model.materia.MateriaRepository;

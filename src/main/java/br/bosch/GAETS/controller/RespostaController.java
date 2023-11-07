@@ -6,7 +6,7 @@ import br.bosch.GAETS.model.resposta.DadosCadastroResposta;
 import br.bosch.GAETS.model.resposta.DadosRetornoResposta;
 import br.bosch.GAETS.model.resposta.DadosRetornoRespostaId;
 import br.bosch.GAETS.model.resposta.RespostaRepository;
-import br.bosch.GAETS.model.service.CadastrarResposta;
+import br.bosch.GAETS.model.service.resposta.CadastrarResposta;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
