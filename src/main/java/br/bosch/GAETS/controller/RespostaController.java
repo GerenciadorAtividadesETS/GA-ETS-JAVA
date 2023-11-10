@@ -51,13 +51,8 @@ public class RespostaController {
     @GetMapping
     public ResponseEntity detalharResposta(@RequestParam(name = "atividade") int idAtividade,
                                            Authentication authentication) {
-        var atividade = atividadeRepository.getReferenceById(idAtividade);
-
-        // QUANDO O USUÁRIO NÃO TEM RESPOSTA CADASTRADA RETORNA RESPOSTA NULL, O QUE QUEBRA O CÓDIGO
-        // FAZER UM TRATAMENTO DE ERRO
-        // PROVAVELMENTE VAI TER QUE FAZER PRA TODOS ENDPOINTS QUE PROCURAM ALGUMA COISA BASEADA NO ID
-
         try {
+            var atividade = atividadeRepository.getReferenceById(idAtividade);
             var resposta = repository.findResposta(authentication.getName(), atividade);
             return ResponseEntity.ok(new DadosRetornoResposta(resposta));
         }

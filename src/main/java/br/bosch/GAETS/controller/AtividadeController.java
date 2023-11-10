@@ -43,8 +43,13 @@ public class AtividadeController {
 
     @GetMapping("/{id}")
     public ResponseEntity detalharAtividade(@PathVariable int id) {
-        var atividade = repository.getReferenceById(id);
-        return ResponseEntity.ok(new DadosRetornoAtividade(atividade));
+        try {
+            var atividade = repository.getReferenceById(id);
+            return ResponseEntity.ok(new DadosRetornoAtividade(atividade));
+        }
+        catch(RuntimeException e) {
+            throw new RuntimeException("Registro não encontrado");
+        }
     }
 
 
@@ -61,7 +66,13 @@ public class AtividadeController {
                                            Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        try {
+            var atividade = repository.getReferenceById(id);
+            repository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        catch(RuntimeException e) {
+            throw new RuntimeException("Registro não encontrado");
+        }
     }
 }

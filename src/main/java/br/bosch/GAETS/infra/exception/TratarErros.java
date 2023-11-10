@@ -15,6 +15,7 @@ public class TratarErros {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
 
+        // SE É ERRO DE NÃO ENCONTRADO, RETORNA ERRO 404
         else if (e.getMessage().contains("não encontrado")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
