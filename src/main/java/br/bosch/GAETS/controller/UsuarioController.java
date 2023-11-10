@@ -1,6 +1,6 @@
 package br.bosch.GAETS.controller;
 
-import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
+import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 public class UsuarioController {
 
@@ -24,7 +26,7 @@ public class UsuarioController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private ValidarUsuarioInstrutor validarUsuarioInstrutor;
+    private List<ValidarUsuarioInstrutor> validadores;
 
 
     // ENDPOINTS
@@ -52,7 +54,7 @@ public class UsuarioController {
     @RequestMapping(value = "/turmas", method=RequestMethod.GET)
     public ResponseEntity<Page<DadosRetornoTurma>> listarTodasTurmas(Pageable pageable,
                                                                      Authentication authentication) {
-        validarUsuarioInstrutor.validar(authentication.getName());
+        validadores.forEach(v -> v.validar(authentication.getName()));
 
         var page = repository.findAllTurma(pageable).map(DadosRetornoTurma::new);
         return ResponseEntity.ok(page);
@@ -63,7 +65,7 @@ public class UsuarioController {
     public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int idTurma,
                                                                             @PageableDefault(sort = {"nome"}) Pageable pageable,
                                                                             Authentication authentication) {
-        validarUsuarioInstrutor.validar(authentication.getName());
+        validadores.forEach(v -> v.validar(authentication.getName()));
 
         var page = repository.findAllByTurma(pageable, idTurma).map(DadosRetornoUsuario::new);
         return ResponseEntity.ok(page);
@@ -74,7 +76,7 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity desativarUsuario(@RequestParam("edv") String edv,
                                            Authentication authentication) {
-        validarUsuarioInstrutor.validar(authentication.getName());
+        validadores.forEach(v -> v.validar(authentication.getName()));
 
         var usuario = repository.getByEdv(edv);
         usuario.desativar();

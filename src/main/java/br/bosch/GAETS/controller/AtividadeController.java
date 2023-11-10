@@ -3,7 +3,7 @@ package br.bosch.GAETS.controller;
 import br.bosch.GAETS.model.atividade.AtividadeRepository;
 import br.bosch.GAETS.model.atividade.DadosCadastroAtividade;
 import br.bosch.GAETS.model.atividade.DadosRetornoAtividade;
-import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
+import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.service.atividade.CadastrarAtividade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

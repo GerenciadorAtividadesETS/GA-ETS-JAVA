@@ -4,7 +4,7 @@ import br.bosch.GAETS.model.materia.DadosCadastroMateria;
 import br.bosch.GAETS.model.materia.DadosRetornoMateria;
 import br.bosch.GAETS.model.materia.Materia;
 import br.bosch.GAETS.model.materia.MateriaRepository;
-import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
+import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

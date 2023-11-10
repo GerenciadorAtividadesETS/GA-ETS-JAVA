@@ -2,6 +2,7 @@ package br.bosch.GAETS.controller;
 
 import br.bosch.GAETS.infra.security.DadosTokenJWT;
 import br.bosch.GAETS.infra.security.TokenService;
+import br.bosch.GAETS.model.service.usuario.ValidarUsuarioAtivo;
 import br.bosch.GAETS.model.usuario.DadosLogin;
 import br.bosch.GAETS.model.usuario.Usuario;
 import jakarta.validation.Valid;
@@ -20,9 +21,15 @@ public class LoginController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private ValidarUsuarioAtivo validador;
+
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid DadosLogin dadosLogin) {
         var token = new UsernamePasswordAuthenticationToken(dadosLogin.edv(), dadosLogin.senha());
+
+        validador.validar(dadosLogin.edv());
+
         var authentication = manager.authenticate(token);
         var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
         return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));

@@ -6,7 +6,7 @@ import br.bosch.GAETS.model.resposta.DadosCadastroResposta;
 import br.bosch.GAETS.model.resposta.DadosRetornoResposta;
 import br.bosch.GAETS.model.resposta.DadosRetornoRespostaId;
 import br.bosch.GAETS.model.resposta.RespostaRepository;
-import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
+import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.service.resposta.CadastrarResposta;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +51,22 @@ public class RespostaController {
     @GetMapping
     public ResponseEntity detalharResposta(@RequestParam(name = "atividade") int idAtividade,
                                            Authentication authentication) {
-        String edv = authentication.getName();
         var atividade = atividadeRepository.getReferenceById(idAtividade);
-        var resposta = repository.findResposta(edv, atividade);
 
-        return ResponseEntity.ok(new DadosRetornoResposta(resposta));
+        // QUANDO O USUÁRIO NÃO TEM RESPOSTA CADASTRADA RETORNA RESPOSTA NULL, O QUE QUEBRA O CÓDIGO
+        // FAZER UM TRATAMENTO DE ERRO
+        // PROVAVELMENTE VAI TER QUE FAZER PRA TODOS ENDPOINTS QUE PROCURAM ALGUMA COISA BASEADA NO ID
+
+        try {
+            var resposta = repository.findResposta(authentication.getName(), atividade);
+            return ResponseEntity.ok(new DadosRetornoResposta(resposta));
+        }
+        catch(RuntimeException e) {
+            throw new RuntimeException("Registro não encontrado");
+        }
     }
 
 
-    // QUANDO O USUÁRIO TEM MAIS DE UMA RESPOSTA CADASTRADA PARA A MESMA ATIVIDADE, DÁ ERRO. PRECISA FAZER UM TRATAMENTO DE ERRO.
     @GetMapping("/materias/{idMateria}")
     public ResponseEntity listarRespostasPorMateria(@PathVariable int idMateria,
                                                     Pageable pageable) {

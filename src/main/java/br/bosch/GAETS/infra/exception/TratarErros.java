@@ -15,6 +15,10 @@ public class TratarErros {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
 
+        else if (e.getMessage().contains("não encontrado")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

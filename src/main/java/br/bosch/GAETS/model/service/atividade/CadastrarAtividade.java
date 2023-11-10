@@ -2,12 +2,11 @@ package br.bosch.GAETS.model.service.atividade;
 
 import br.bosch.GAETS.model.atividade.*;
 import br.bosch.GAETS.model.materia.MateriaRepository;
-import br.bosch.GAETS.model.service.ValidarUsuarioInstrutor;
+import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class CadastrarAtividade {

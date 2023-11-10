@@ -1,11 +1,11 @@
-package br.bosch.GAETS.model.service;
+package br.bosch.GAETS.model.service.usuario;
 
 import br.bosch.GAETS.model.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidarUsuarioInstrutor {
+public class ValidarUsuarioInstrutor implements ValidarUsuario {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
