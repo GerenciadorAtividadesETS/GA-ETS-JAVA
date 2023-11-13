@@ -27,11 +27,11 @@ public class LoginController {
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid DadosLogin dadosLogin) {
         var token = new UsernamePasswordAuthenticationToken(dadosLogin.edv(), dadosLogin.senha());
-
         validador.validar(dadosLogin.edv());
 
         var authentication = manager.authenticate(token);
         var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+
         return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
 }

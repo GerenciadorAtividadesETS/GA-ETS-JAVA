@@ -1,9 +1,6 @@
 package br.bosch.GAETS.controller;
 
-import br.bosch.GAETS.model.materia.DadosCadastroMateria;
-import br.bosch.GAETS.model.materia.DadosRetornoMateria;
-import br.bosch.GAETS.model.materia.Materia;
-import br.bosch.GAETS.model.materia.MateriaRepository;
+import br.bosch.GAETS.model.materia.*;
 import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -39,21 +36,30 @@ public class MateriaController {
                                            Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
-        var materia = new Materia(dadosCadastroMateria);
-        var uri = uriComponentsBuilder.path("/materias/{id}").buildAndExpand(materia.getId()).toUri();
-        repository.save(materia);
+        try {
+            var materia = new Materia(dadosCadastroMateria);
+            var uri = uriComponentsBuilder.path("/materias/{id}").buildAndExpand(materia.getId()).toUri();
+            repository.save(materia);
+            return ResponseEntity.created(uri).body(new DadosRetornoMateria(materia));
+        }
 
-        return ResponseEntity.created(uri).body(new DadosRetornoMateria(materia));
+        catch(RuntimeException e) {
+            throw new RuntimeException("Registro já existe");
+        }
     }
 
 
     @GetMapping
     public ResponseEntity<Page<DadosRetornoMateria>> listarMateriasTurma(@PageableDefault(size = 10) Pageable pageable,
                                                                          Authentication authentication) {
-        validarUsuarioInstrutor.validar(authentication.getName());
-
         var usuario = usuarioRepository.getByEdv(authentication.getName());
         var page = repository.findAllByTurma(pageable, usuario.getTurma());
+        System.out.println("TURMA AQUI");
+        System.out.println("TURMA AQUI");
+        System.out.println("TURMA AQUI");
+        System.out.println("TURMA AQUI");
+        System.out.println("TURMA AQUI");
+        System.out.println(usuario.getTurma());
 
         return ResponseEntity.ok(page);
     }
@@ -65,7 +71,13 @@ public class MateriaController {
                                          Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
-        repository.deleteByNome(nome);
-        return ResponseEntity.noContent().build();
+        try {
+            repository.deleteByNome(nome);
+            return ResponseEntity.noContent().build();
+        }
+
+        catch(RuntimeException e) {
+            throw new RuntimeException("Registro não encontrado");
+        }
     }
 }

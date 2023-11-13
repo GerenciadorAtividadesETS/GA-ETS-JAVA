@@ -1,8 +1,6 @@
 package br.bosch.GAETS.controller;
 
-import br.bosch.GAETS.model.atividade.AtividadeRepository;
-import br.bosch.GAETS.model.atividade.DadosCadastroAtividade;
-import br.bosch.GAETS.model.atividade.DadosRetornoAtividade;
+import br.bosch.GAETS.model.atividade.*;
 import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.service.atividade.CadastrarAtividade;
 import jakarta.validation.Valid;
@@ -47,6 +45,7 @@ public class AtividadeController {
             var atividade = repository.getReferenceById(id);
             return ResponseEntity.ok(new DadosRetornoAtividade(atividade));
         }
+
         catch(RuntimeException e) {
             throw new RuntimeException("Registro não encontrado");
         }
@@ -56,14 +55,14 @@ public class AtividadeController {
     @GetMapping("/turmas/{idTurma}")
     public ResponseEntity listarAtividadesPorTurma(@PathVariable int idTurma, Pageable pageable) {
         var page = repository.findAllByTurma(pageable, idTurma).map(DadosRetornoAtividade::new);
+
         return ResponseEntity.ok(page);
     }
 
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluirAtividade(@PathVariable int id,
-                                           Authentication authentication) {
+    public ResponseEntity excluirAtividade(@PathVariable int id, Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
         try {
@@ -71,6 +70,7 @@ public class AtividadeController {
             repository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
+
         catch(RuntimeException e) {
             throw new RuntimeException("Registro não encontrado");
         }

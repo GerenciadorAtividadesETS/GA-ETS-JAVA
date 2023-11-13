@@ -2,10 +2,7 @@ package br.bosch.GAETS.controller;
 
 import br.bosch.GAETS.model.atividade.AtividadeRepository;
 import br.bosch.GAETS.model.materia.MateriaRepository;
-import br.bosch.GAETS.model.resposta.DadosCadastroResposta;
-import br.bosch.GAETS.model.resposta.DadosRetornoResposta;
-import br.bosch.GAETS.model.resposta.DadosRetornoRespostaId;
-import br.bosch.GAETS.model.resposta.RespostaRepository;
+import br.bosch.GAETS.model.resposta.*;
 import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.service.resposta.CadastrarResposta;
 import jakarta.validation.Valid;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/respostas")
 public class RespostaController {
-    // VERIFICAR DEPOIS SE É POSSÍVEL CRIAR MAIS FUNÇÕES DENTRO DE SERVICE PARA TIRAR OS REPOSITÓRIOS DAQUI
 
     @Autowired
     private RespostaRepository repository;
@@ -56,6 +52,7 @@ public class RespostaController {
             var resposta = repository.findResposta(authentication.getName(), atividade);
             return ResponseEntity.ok(new DadosRetornoResposta(resposta));
         }
+
         catch(RuntimeException e) {
             throw new RuntimeException("Registro não encontrado");
         }
@@ -65,10 +62,15 @@ public class RespostaController {
     @GetMapping("/materias/{idMateria}")
     public ResponseEntity listarRespostasPorMateria(@PathVariable int idMateria,
                                                     Pageable pageable) {
-        var materia = materiaRepository.getReferenceById(idMateria);
-        var page = repository.findAllByMateria(pageable, materia).map(DadosRetornoRespostaId::new);
+        try {
+            var materia = materiaRepository.getReferenceById(idMateria);
+            var page = repository.findAllByMateria(pageable, materia).map(DadosRetornoRespostaId::new);
+            return ResponseEntity.ok(page);
+        }
 
-        return ResponseEntity.ok(page);
+        catch(RuntimeException e) {
+            throw new RuntimeException("ID Matéria não encontrado");
+        }
     }
 
 
@@ -79,10 +81,15 @@ public class RespostaController {
                                                   Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
-        var atividade = atividadeRepository.getReferenceById(idAtividade);
-        var page = repository.findAllByTurma(pageable, atividade, idTurma).map(DadosRetornoResposta::new);
+        try {
+            var atividade = atividadeRepository.getReferenceById(idAtividade);
+            var page = repository.findAllByTurma(pageable, atividade, idTurma).map(DadosRetornoResposta::new);
+            return ResponseEntity.ok(page);
+        }
 
-        return ResponseEntity.ok(page);
+        catch(RuntimeException e) {
+            throw new RuntimeException("ID Atividade não encontrado");
+        }
     }
 
 
