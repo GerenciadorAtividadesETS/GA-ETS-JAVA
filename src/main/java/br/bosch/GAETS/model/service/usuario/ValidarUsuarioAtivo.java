@@ -14,7 +14,7 @@ public class ValidarUsuarioAtivo implements ValidarUsuario {
         var usuario = usuarioRepository.getByEdvAndAtivoTrue(edv);
 
         if (usuario == null) {
-            throw new RuntimeException("Usuário desativado");
+            throw new RuntimeException("Usuário inexistente e/ou credenciais inválidas");
         }
     }
 }

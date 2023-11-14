@@ -11,6 +11,7 @@ import java.time.*;
 
 @Service
 public class TokenService {
+
     // CHAVE DE SEGURANÇA API
     @Value("{api.security.token.secret}")
     private String secret;
@@ -24,8 +25,9 @@ public class TokenService {
                     .withExpiresAt(dataExpiracao())
                     .sign(algoritmo);
         }
+
         catch (JWTCreationException exception) {
-            throw new RuntimeException("Falha ao gerar TOKEN");
+            throw new RuntimeException("Não foi possível gerar Token JWT");
         }
     }
 
@@ -45,7 +47,7 @@ public class TokenService {
                     .getSubject();
         }
         catch (JWTVerificationException exception) {
-            throw new RuntimeException("TOKEN inválido");
+            throw new RuntimeException("Token JWT inválido");
         }
     }
 }

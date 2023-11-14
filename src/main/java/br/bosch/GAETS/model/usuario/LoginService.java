@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginService implements UserDetailsService {
     @Autowired
-    private UsuarioRepository repository;
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByEdv(username);
+        return usuarioRepository.findByEdv(username);
     }
 }

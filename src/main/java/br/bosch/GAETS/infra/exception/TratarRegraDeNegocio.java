@@ -1,0 +1,26 @@
+package br.bosch.GAETS.infra.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class TratarRegraDeNegocio {
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity tratarRegraDeNegocio(RuntimeException e) {
+
+        // ERRO DE PERMISSÃO, RETORNA ERRO 403
+        if (e.getMessage().contains("permissão")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+
+        // ERRO DE NÃO ENCONTRADO, RETORNA ERRO 404
+        else if (e.getMessage().contains("não encontrado") || e.getMessage().contains("inexistente")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
