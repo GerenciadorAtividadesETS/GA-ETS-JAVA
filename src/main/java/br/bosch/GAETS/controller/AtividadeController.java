@@ -31,7 +31,6 @@ public class AtividadeController {
     public ResponseEntity cadastrarAtividade(@RequestBody @Valid DadosCadastroAtividade dadosCadastroAtividade,
                                     Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
-
         var edv = authentication.getName();
         var atividade = cadastrarAtividade.cadastrar(dadosCadastroAtividade, edv);
 
