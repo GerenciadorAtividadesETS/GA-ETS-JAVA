@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface RespostaRepository extends JpaRepository<Resposta, Integer> {
+    boolean existsById(int id);
     @Query(
         """
             SELECT r FROM Resposta r

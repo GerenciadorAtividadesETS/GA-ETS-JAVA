@@ -6,6 +6,7 @@ import br.bosch.GAETS.model.resposta.*;
 import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.service.resposta.CadastrarResposta;
 import jakarta.validation.Valid;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -54,20 +55,22 @@ public class RespostaController {
         }
 
         catch(RuntimeException e) {
-            throw new RuntimeException("Registro não encontrado");
+            throw new RuntimeException("Resposta não encontrada");
         }
     }
 
 
     @GetMapping("/materias/{idMateria}")
     public ResponseEntity listarRespostasPorMateria(@PathVariable int idMateria,
-                                                    Pageable pageable) {
+                                                    Pageable pageable,
+                                                    Authentication authentication) {
+        validarUsuarioInstrutor.validar(authentication.getName());
+
         try {
             var materia = materiaRepository.getReferenceById(idMateria);
             var page = repository.findAllByMateria(pageable, materia).map(DadosRetornoRespostaId::new);
             return ResponseEntity.ok(page);
         }
-
         catch(RuntimeException e) {
             throw new RuntimeException("ID Matéria não encontrado");
         }
@@ -86,7 +89,6 @@ public class RespostaController {
             var page = repository.findAllByTurma(pageable, atividade, idTurma).map(DadosRetornoResposta::new);
             return ResponseEntity.ok(page);
         }
-
         catch(RuntimeException e) {
             throw new RuntimeException("ID Atividade não encontrado");
         }
@@ -96,7 +98,15 @@ public class RespostaController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity excluirResposta(@PathVariable int id) {
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+
+        // FAZER VERIFICAÇÃO PARA PERMITIR SOMENTE USUÁRIO LOGADO A APAGAR
+
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        else {
+            throw new RuntimeException("Resposta não encontrada");
+        }
     }
 }
