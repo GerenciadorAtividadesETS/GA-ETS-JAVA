@@ -36,16 +36,11 @@ public class MateriaController {
                                            Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
-        try {
-            var materia = new Materia(dadosCadastroMateria);
-            var uri = uriComponentsBuilder.path("/materias/{id}").buildAndExpand(materia.getId()).toUri();
-            repository.save(materia);
-            return ResponseEntity.created(uri).body(new DadosRetornoMateria(materia));
-        }
+        var materia = new Materia(dadosCadastroMateria);
+        var uri = uriComponentsBuilder.path("/materias/{id}").buildAndExpand(materia.getId()).toUri();
+        repository.save(materia);
 
-        catch(RuntimeException e) {
-            throw new RuntimeException("Registro já existe");
-        }
+        return ResponseEntity.created(uri).body(new DadosRetornoMateria(materia));
     }
 
 
@@ -54,12 +49,6 @@ public class MateriaController {
                                                                          Authentication authentication) {
         var usuario = usuarioRepository.getByEdv(authentication.getName());
         var page = repository.findAllByTurma(pageable, usuario.getTurma());
-        System.out.println("TURMA AQUI");
-        System.out.println("TURMA AQUI");
-        System.out.println("TURMA AQUI");
-        System.out.println("TURMA AQUI");
-        System.out.println("TURMA AQUI");
-        System.out.println(usuario.getTurma());
 
         return ResponseEntity.ok(page);
     }
@@ -71,13 +60,12 @@ public class MateriaController {
                                          Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
-        try {
+        if (repository.existsByNome(nome)) {
             repository.deleteByNome(nome);
             return ResponseEntity.noContent().build();
         }
-
-        catch(RuntimeException e) {
-            throw new RuntimeException("Registro não encontrado");
+        else {
+            throw new RuntimeException("Matéria não encontrada");
         }
     }
 }

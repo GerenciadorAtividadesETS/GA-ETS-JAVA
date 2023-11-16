@@ -19,7 +19,7 @@ public class TratarErros {
         }
 
         // ERRO DE NÃO ENCONTRADO, RETORNA ERRO 404
-        else if (e.getMessage().contains("não encontrado") || e.getMessage().contains("inexistente")) {
+        else if (e.getMessage().contains("não encontrad") || e.getMessage().contains("inexistente")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
