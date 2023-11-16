@@ -34,13 +34,18 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dadosCadastroUsuario,
                                            UriComponentsBuilder uriComponentsBuilder) {
-        var senhaCriptografada = bCryptPasswordEncoder.encode(dadosCadastroUsuario.senha());
-        var usuario = new Usuario(dadosCadastroUsuario);
-        var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
-        usuario.setSenha(senhaCriptografada);
-        repository.save(usuario);
+        if (dadosCadastroUsuario.turma() > 0) {
+            var senhaCriptografada = bCryptPasswordEncoder.encode(dadosCadastroUsuario.senha());
+            var usuario = new Usuario(dadosCadastroUsuario);
+            var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
+            usuario.setSenha(senhaCriptografada);
+            repository.save(usuario);
 
-        return ResponseEntity.created(uri).body(new DadosRetornoUsuario(usuario));
+            return ResponseEntity.created(uri).body(new DadosRetornoUsuario(usuario));
+        }
+        else {
+            throw new RuntimeException("Turma inválida");
+        }
     }
 
 
@@ -78,9 +83,13 @@ public class UsuarioController {
                                            Authentication authentication) {
         validadores.forEach(v -> v.validar(authentication.getName()));
 
-        var usuario = repository.getByEdv(edv);
-        usuario.desativar();
-
-        return ResponseEntity.noContent().build();
+        try {
+            var usuario = repository.getByEdv(edv);
+            usuario.desativar();
+            return ResponseEntity.noContent().build();
+        }
+        catch (RuntimeException e) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
     }
 }

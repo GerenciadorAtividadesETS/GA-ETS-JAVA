@@ -1,5 +1,6 @@
 package br.bosch.GAETS.infra.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,5 +29,10 @@ public class TratarErros {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity tratarDadosInvalidos(MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest().body("Dados inválidos");
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity tratarConstraints(DataIntegrityViolationException e) {
+        return ResponseEntity.badRequest().body("Dados duplicados");
     }
 }
