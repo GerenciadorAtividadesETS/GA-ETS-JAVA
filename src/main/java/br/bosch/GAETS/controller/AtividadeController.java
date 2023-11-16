@@ -44,9 +44,8 @@ public class AtividadeController {
             var atividade = repository.getReferenceById(id);
             return ResponseEntity.ok(new DadosRetornoAtividade(atividade));
         }
-
         catch(RuntimeException e) {
-            throw new RuntimeException("Registro não encontrado");
+            throw new RuntimeException("Atividade não encontrada");
         }
     }
 
@@ -64,14 +63,12 @@ public class AtividadeController {
     public ResponseEntity excluirAtividade(@PathVariable int id, Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
-        try {
-            var atividade = repository.getReferenceById(id);
+        if (repository.existsById(id)) {
             repository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
-
-        catch(RuntimeException e) {
-            throw new RuntimeException("Registro não encontrado");
+        else {
+            throw new RuntimeException("Atividade não encontrada");
         }
     }
 }

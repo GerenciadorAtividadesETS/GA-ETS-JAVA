@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface AtividadeRepository extends JpaRepository<Atividade, Integer> {
+    boolean existsById(int id);
 
     @Query(
         """

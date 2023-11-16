@@ -23,15 +23,17 @@ public class CadastrarAtividade {
     private ValidarUsuarioInstrutor validarUsuarioInstrutor;
 
     public DadosRetornoAtividade cadastrar(DadosCadastroAtividade dadosCadastroAtividade, String edv) {
-        // VALIDAÇÃO DE USUÁRIO
-        validarUsuarioInstrutor.validar(edv);
-
         var usuario = usuarioRepository.getByEdv(edv);
-        var materia = materiaRepository.getReferenceById(dadosCadastroAtividade.idMateria());
 
-        var atividade = new Atividade(0, usuario, materia, dadosCadastroAtividade.turma(), dadosCadastroAtividade.titulo(), dadosCadastroAtividade.descricao(), LocalDateTime.now(), dadosCadastroAtividade.dataEntrega(), true);
-        atividadeRepository.save(atividade);
+        if (materiaRepository.existsById(dadosCadastroAtividade.idMateria())) {
+            var materia = materiaRepository.getReferenceById(dadosCadastroAtividade.idMateria());
+            var atividade = new Atividade(0, usuario, materia, dadosCadastroAtividade.turma(), dadosCadastroAtividade.titulo(), dadosCadastroAtividade.descricao(), LocalDateTime.now(), dadosCadastroAtividade.dataEntrega(), true);
+            atividadeRepository.save(atividade);
 
-        return new DadosRetornoAtividade(atividade);
+            return new DadosRetornoAtividade(atividade);
+        }
+        else {
+            throw new RuntimeException("Matéria não encontrada");
+        }
     }
 }

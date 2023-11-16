@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface MateriaRepository extends JpaRepository<Materia, Integer> {
     void deleteByNome(String nome);
     boolean existsByNome(String nome);
+    boolean existsById(int id);
 
     @Query(
         """
