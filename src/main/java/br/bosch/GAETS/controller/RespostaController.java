@@ -5,6 +5,7 @@ import br.bosch.GAETS.model.materia.MateriaRepository;
 import br.bosch.GAETS.model.resposta.*;
 import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.service.resposta.CadastrarResposta;
+import br.bosch.GAETS.model.usuario.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class RespostaController {
 
     @Autowired
     private MateriaRepository materiaRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private ValidarUsuarioInstrutor validarUsuarioInstrutor;
@@ -97,16 +101,18 @@ public class RespostaController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluirResposta(@PathVariable int id) {
-
-        // FAZER VERIFICAÇÃO PARA PERMITIR SOMENTE USUÁRIO LOGADO A APAGAR
+    public ResponseEntity excluirResposta(@PathVariable int id,
+                                          Authentication authentication) {
 
         if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            var resposta = repository.getReferenceById(id);
+            var edv = authentication.getName();
+            if ((resposta.getUsuario().getEdv()).equals(edv)) {
+                repository.deleteById(id);
+                return ResponseEntity.noContent().build();
+            }
+            throw new RuntimeException("Usuário sem permissão");
         }
-        else {
-            throw new RuntimeException("Resposta não encontrada");
-        }
+        throw new RuntimeException("Resposta não encontrada");
     }
 }

@@ -47,6 +47,15 @@ public class TokenService {
                     .getSubject();
         }
         catch (JWTVerificationException exception) {
+            System.out.println("DADOS DA EZCEÇÂO ");
+            System.out.println("DADOS DA EZCEÇÂO ");
+            System.out.println("DADOS DA EZCEÇÂO ");
+            System.out.println("DADOS DA EZCEÇÂO ");
+            System.out.println("DADOS DA EZCEÇÂO ");
+            System.out.println(exception.getMessage());
+            System.out.println( exception.getClass());
+
+
             throw new RuntimeException("Token JWT inválido");
         }
     }
