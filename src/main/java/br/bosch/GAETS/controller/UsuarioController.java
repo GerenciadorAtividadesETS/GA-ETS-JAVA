@@ -2,6 +2,11 @@ package br.bosch.GAETS.controller;
 
 import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.*;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+@Tag(name = "Usuários", description = "Endpoints da entidade Usuários")
 @RestController
 public class UsuarioController {
 
@@ -29,7 +35,47 @@ public class UsuarioController {
     private List<ValidarUsuarioInstrutor> validadores;
 
 
-    // ENDPOINTS
+    @Operation(
+            summary = "Cadastra um novo usuário no sistema",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do usuário a ser cadastrado",
+                    required = true,
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "Usuário Válido",
+                                    value = "{ \"turma\": \"1\"," +
+                                            "\"edv\": \"92900000\"," +
+                                            "\"nome\": \"John\"," +
+                                            "\"senha\": \"minhaSenha\"," +
+                                            "\"cor\": \"FFFFFF\"}"
+                            )
+                    )),
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuário cadastrado com sucesso",
+                            content = @io.swagger.v3.oas.annotations.media.Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            name = "Usuário Válido",
+                                            value = "{ \"turma\": \"1\"," +
+                                                    "\"edv\": \"92900000\"," +
+                                                    "\"nome\": \"John\"," +
+                                                    "\"senha\": \"minhaSenha\"," +
+                                                    "\"cor\": \"FFFFFF\"}"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Dados inválidos",
+                            content = @io.swagger.v3.oas.annotations.media.Content(
+                                    mediaType = "",
+                                    examples = @ExampleObject(
+                                            name = "",
+                                            value = ""
+                                    )
+                            )
+                    )
+            }
+    )
     @RequestMapping(value = "/usuarios", method=RequestMethod.POST)
     @Transactional
     public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dadosCadastroUsuario,
