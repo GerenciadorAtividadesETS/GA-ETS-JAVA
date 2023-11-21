@@ -36,14 +36,25 @@ public class LoginController {
     @Operation(
         summary = "Realiza o login do usuário no sistema",
         tags = { "Login" },
-        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "EDV e Senha do usuário a ser logado", required = true),
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                description = "EDV e Senha do usuário a ser logado",
+                required = true,
+                content = @io.swagger.v3.oas.annotations.media.Content(
+                        mediaType = "application/json",
+                        examples = @ExampleObject(
+                                name = "Login Válido",
+                                value = "{ \"edv\": \"12345678\"," +
+                                        "\"senha\": \"minhaSenha\"}"
+                        )
+                )
+        ),
         responses = {
                 @ApiResponse(responseCode = "200", description = "Login bem sucedido, retorna o Token JWT",
                         content = @io.swagger.v3.oas.annotations.media.Content(
                                 mediaType = "application/json",
                                 examples = @ExampleObject(
                                         name = "Login bem sucedido",
-                                        value = "{ \"tokenJWT\": \"string\" }"
+                                        value = "{ \"tokenJWT\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MjkwMDI5MCIsImlzcyI6IkFQSSIsImV4cCI6MTcwMDIzMjMwNX0.50RWkN9qP-LjuRtql9gkBybgk1wHJUKxMXSkh2DGjDw\" }"
                                 )
                         )
                 ),

@@ -4,7 +4,10 @@ import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.*;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -21,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+@Schema(hidden = true)
 @Tag(name = "Usuários", description = "Endpoints da entidade Usuários")
 @RestController
 public class UsuarioController {
@@ -45,8 +49,8 @@ public class UsuarioController {
                             examples = @ExampleObject(
                                     name = "Usuário Válido",
                                     value = "{ \"turma\": \"1\"," +
-                                            "\"edv\": \"92900000\"," +
-                                            "\"nome\": \"John\"," +
+                                            "\"edv\": \"12345678\"," +
+                                            "\"nome\": \"João\"," +
                                             "\"senha\": \"minhaSenha\"," +
                                             "\"cor\": \"FFFFFF\"}"
                             )
@@ -58,8 +62,8 @@ public class UsuarioController {
                                     examples = @ExampleObject(
                                             name = "Usuário Válido",
                                             value = "{ \"turma\": \"1\"," +
-                                                    "\"edv\": \"92900000\"," +
-                                                    "\"nome\": \"John\"," +
+                                                    "\"edv\": \"12345678\"," +
+                                                    "\"nome\": \"João\"," +
                                                     "\"senha\": \"minhaSenha\"," +
                                                     "\"cor\": \"FFFFFF\"}"
                                     )
@@ -94,7 +98,36 @@ public class UsuarioController {
         }
     }
 
-
+    @Operation(
+            summary = "Retorna os dados de um usuário cadastrado no sistema",
+            parameters = {
+                    @Parameter(name = "id", description = "ID do usuário a ser retornado", in = ParameterIn.PATH)
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuário cadastrado com sucesso",
+                            content = @io.swagger.v3.oas.annotations.media.Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            name = "Usuário Válido",
+                                            value = "{ \"turma\": \"1\"," +
+                                                    "\"edv\": \"12345678\"," +
+                                                    "\"nome\": \"João\"," +
+                                                    "\"senha\": \"minhaSenha\"," +
+                                                    "\"cor\": \"FFFFFF\"}"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Dados inválidos",
+                            content = @io.swagger.v3.oas.annotations.media.Content(
+                                    mediaType = "",
+                                    examples = @ExampleObject(
+                                            name = "",
+                                            value = ""
+                                    )
+                            )
+                    )
+            }
+    )
     @RequestMapping(value = "/usuarios", method = RequestMethod.GET)
     public ResponseEntity detalharUsuario(Authentication authentication) {
         var usuario = repository.getByEdv(authentication.getName());
