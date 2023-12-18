@@ -18,11 +18,11 @@ public class Atividade {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuarios_id")
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "materias_id")
+    @JoinColumn(name = "materia_id")
     private Materia materia;
 
     private int turma;

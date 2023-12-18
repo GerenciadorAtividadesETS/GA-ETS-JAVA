@@ -1,7 +1,7 @@
 CREATE TABLE Atividades(
     id INT NOT NULL AUTO_INCREMENT,
-    usuarios_id INT NOT NULL,
-    materias_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    materia_id INT NOT NULL,
     turma INT NOT NULL,
     titulo VARCHAR(100) NOT NULL,
     descricao LONGTEXT,
@@ -10,6 +10,6 @@ CREATE TABLE Atividades(
     ativo TINYINT NOT NULL,
 
     PRIMARY KEY(id),
-    CONSTRAINT fk_atividades_usuarios_id FOREIGN KEY(usuarios_id) REFERENCES usuarios(id),
-    CONSTRAINT fk_atividades_materias_id FOREIGN KEY(materias_id) REFERENCES materias(id)
+    CONSTRAINT fk_atividades_usuarios_id FOREIGN KEY(usuario_id) REFERENCES usuarios(id),
+    CONSTRAINT fk_atividades_materias_id FOREIGN KEY(materia_id) REFERENCES materias(id)
 )

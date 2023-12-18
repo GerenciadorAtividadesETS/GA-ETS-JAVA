@@ -18,11 +18,11 @@ public class Resposta {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "atividades_id")
+    @JoinColumn(name = "atividade_id")
     private Atividade atividade;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuarios_id")
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     private LocalDateTime dataAlteracao;
