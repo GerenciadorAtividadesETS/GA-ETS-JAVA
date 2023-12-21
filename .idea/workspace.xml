@@ -5,27 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87f48a51-fbba-45df-a95a-f25041513d56" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/GA_ETS_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/GaEtsApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/GaEtsApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/MateriaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/MateriaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/RespostaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/RespostaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/UsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/infra/security/SecurityConfigurations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/infra/security/SecurityConfigurations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/model/resposta/RespostaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/model/resposta/RespostaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/model/service/usuario/ValidarUsuarioInstrutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/model/service/usuario/ValidarUsuarioInstrutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/GaEtsApplication$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/GaEtsApplication$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/GaEtsApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/GaEtsApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/controller/UsuarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/controller/UsuarioController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/infra/security/SecurityConfigurations.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/infra/security/SecurityConfigurations.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

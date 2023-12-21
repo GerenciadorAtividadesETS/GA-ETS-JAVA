@@ -1,6 +1,7 @@
 package br.bosch.GAETS.controller;
 
 import br.bosch.GAETS.model.materia.*;
+import br.bosch.GAETS.model.resposta.DadosRetornoRespostaId;
 import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -45,13 +46,25 @@ public class MateriaController {
 
 
     @GetMapping
-    public ResponseEntity<Page<DadosRetornoMateria>> listarMateriasTurma(@PageableDefault(size = 10) Pageable pageable,
+    public ResponseEntity<Page<DadosRetornoMateria>> listarTodasMaterias(@PageableDefault(size = 10) Pageable pageable,
                                                                          Authentication authentication) {
-        var usuario = usuarioRepository.getByEdv(authentication.getName());
-        var page = repository.findAllByTurma(pageable, usuario.getTurma());
+        validarUsuarioInstrutor.validar(authentication.getName());
+        var page = repository.findAll(pageable).map(DadosRetornoMateria::new);
 
         return ResponseEntity.ok(page);
     }
+
+
+    @GetMapping("/turmas/{turma}")
+    public ResponseEntity<Page<DadosRetornoMateria>> listarMateriasTurma(@PageableDefault(size = 10) Pageable pageable,
+                                                                         @PathVariable int turma,
+                                                                         Authentication authentication) {
+        var usuario = usuarioRepository.getByEdv(authentication.getName());
+        var page = repository.findAllByTurma(pageable, turma);
+
+        return ResponseEntity.ok(page);
+    }
+
 
     @DeleteMapping("{nome}")
     @Transactional

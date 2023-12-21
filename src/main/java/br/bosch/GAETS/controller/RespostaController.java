@@ -70,7 +70,6 @@ public class RespostaController {
             }
         }
 
-        // FAZER TRATAMENTO DE EXCEÇÃO
         catch(RuntimeException e) {
             if (e.getMessage().contains("permissão de acesso")) {
                 throw new RuntimeException("Usuário não tem permissão de acesso");
