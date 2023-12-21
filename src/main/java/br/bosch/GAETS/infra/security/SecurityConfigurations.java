@@ -17,7 +17,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.util.Arrays;
 
 @Configuration
@@ -54,6 +53,7 @@ public class SecurityConfigurations {
         return new BCryptPasswordEncoder();
     }
 
+    // CONFIGURAÇÕES CORSHEADERS
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -63,6 +63,4 @@ public class SecurityConfigurations {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
 }

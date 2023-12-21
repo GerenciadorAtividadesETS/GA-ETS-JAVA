@@ -49,16 +49,33 @@ public class RespostaController {
     }
 
 
+    // TESTAR
     @GetMapping
     public ResponseEntity detalharResposta(@RequestParam(name = "atividade") int idAtividade,
+                                           @RequestParam(name = "usuario") String edv,
                                            Authentication authentication) {
         try {
-            var atividade = atividadeRepository.getReferenceById(idAtividade);
-            var resposta = repository.findResposta(authentication.getName(), atividade);
-            return ResponseEntity.ok(new DadosRetornoResposta(resposta));
+            if (authentication.getName().equals(edv)) {
+                var atividade = atividadeRepository.getReferenceById(idAtividade);
+                var resposta = repository.findResposta(authentication.getName(), atividade);
+                return ResponseEntity.ok(new DadosRetornoResposta(resposta));
+            }
+            else {
+                validarUsuarioInstrutor.validar(authentication.getName());
+                System.out.println("Não é pra chegar aqui");
+
+                var atividade = atividadeRepository.getReferenceById(idAtividade);
+                var resposta = repository.findResposta(edv, atividade);
+                return ResponseEntity.ok(new DadosRetornoResposta(resposta));
+            }
         }
 
+        // FAZER TRATAMENTO DE EXCEÇÃO
         catch(RuntimeException e) {
+            if (e.getMessage().contains("permissão de acesso")) {
+                throw new RuntimeException("Usuário não tem permissão de acesso");
+            }
+            
             throw new RuntimeException("Resposta não encontrada");
         }
     }
@@ -81,16 +98,15 @@ public class RespostaController {
     }
 
 
-    @GetMapping("/atividades/{idAtividade}/turmas/{idTurma}")
+    @GetMapping("/atividades/{idAtividade}")
     public ResponseEntity listarRespostasPorTurma(@PathVariable int idAtividade,
-                                                  @PathVariable int idTurma,
                                                   Pageable pageable,
                                                   Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 
         try {
             var atividade = atividadeRepository.getReferenceById(idAtividade);
-            var page = repository.findAllByTurma(pageable, atividade, idTurma).map(DadosRetornoResposta::new);
+            var page = repository.findAllByAtividade(pageable, atividade).map(DadosRetornoResposta::new);
             return ResponseEntity.ok(page);
         }
         catch(RuntimeException e) {

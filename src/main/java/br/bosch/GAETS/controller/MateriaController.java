@@ -53,10 +53,9 @@ public class MateriaController {
         return ResponseEntity.ok(page);
     }
 
-
-    @DeleteMapping
+    @DeleteMapping("{nome}")
     @Transactional
-    public ResponseEntity excluirMateria(@RequestParam(name = "nome") String nome,
+    public ResponseEntity excluirMateria(@PathVariable String nome,
                                          Authentication authentication) {
         validarUsuarioInstrutor.validar(authentication.getName());
 

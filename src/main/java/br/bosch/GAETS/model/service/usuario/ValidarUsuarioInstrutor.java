@@ -15,6 +15,7 @@ public class ValidarUsuarioInstrutor implements ValidarUsuario {
         var usuario = usuarioRepository.getByEdv(edv);
 
         if (usuario.getTurma() != 0) {
+            System.out.println("Usuário não é instrutor");
             throw new RuntimeException("Usuário não tem permissão de acesso");
         }
     }

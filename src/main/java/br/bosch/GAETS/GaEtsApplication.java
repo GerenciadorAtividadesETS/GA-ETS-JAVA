@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class GaEtsApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(GaEtsApplication.class, args);
 	}
@@ -22,6 +21,4 @@ public class GaEtsApplication {
 			}
 		};
 	}
-
-
 }

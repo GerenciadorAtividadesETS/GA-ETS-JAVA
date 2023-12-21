@@ -2,7 +2,6 @@ package br.bosch.GAETS.controller;
 
 import br.bosch.GAETS.model.service.usuario.ValidarUsuarioInstrutor;
 import br.bosch.GAETS.model.usuario.*;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -21,7 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.util.List;
 
 @Schema(hidden = true)
@@ -39,6 +37,7 @@ public class UsuarioController {
     private List<ValidarUsuarioInstrutor> validadores;
 
 
+    // FUNCIONANDO
     @Operation(
             summary = "Cadastra um novo usuário no sistema",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -98,6 +97,7 @@ public class UsuarioController {
         }
     }
 
+    // FUNCIONANDO
     @Operation(
             summary = "Retorna os dados de um usuário cadastrado no sistema",
             parameters = {
@@ -128,13 +128,13 @@ public class UsuarioController {
                     )
             }
     )
-    @RequestMapping(value = "/usuarios", method = RequestMethod.GET)
-    public ResponseEntity detalharUsuario(Authentication authentication) {
-        var usuario = repository.getByEdv(authentication.getName());
+    @RequestMapping(value = "/usuarios/{edv}", method = RequestMethod.GET)
+    public ResponseEntity detalharUsuario(@PathVariable String edv) {
+        var usuario = repository.getByEdv(edv);
         return ResponseEntity.ok(new DadosRetornoUsuario(usuario));
     }
 
-
+    // FUNCIONANDO
     @RequestMapping(value = "/turmas", method=RequestMethod.GET)
     public ResponseEntity<Page<DadosRetornoTurma>> listarTodasTurmas(Pageable pageable,
                                                                      Authentication authentication) {
@@ -145,6 +145,7 @@ public class UsuarioController {
     }
 
 
+    // FUNCIONANDO
     @RequestMapping(value = "/turmas/{idTurma}", method=RequestMethod.GET)
     public ResponseEntity<Page<DadosRetornoUsuario>> listarUsuariosPorTurma(@PathVariable int idTurma,
                                                                             @PageableDefault(sort = {"nome"}) Pageable pageable,
@@ -156,9 +157,10 @@ public class UsuarioController {
     }
 
 
-    @RequestMapping(value = "/usuarios", method=RequestMethod.DELETE)
+    // FUNCIONANDO
+    @RequestMapping(value = "/usuarios/{edv}", method=RequestMethod.DELETE)
     @Transactional
-    public ResponseEntity desativarUsuario(@RequestParam("edv") String edv,
+    public ResponseEntity desativarUsuario(@PathVariable String edv,
                                            Authentication authentication) {
         validadores.forEach(v -> v.validar(authentication.getName()));
 
