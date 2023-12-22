@@ -128,6 +128,11 @@ public class UsuarioController {
                     )
             }
     )
+    @RequestMapping(value = "/usuarios", method = RequestMethod.GET)
+    public ResponseEntity detalharUsuario(Authentication authentication) {
+        var usuario = repository.getByEdv(authentication.getName());
+        return ResponseEntity.ok(new DadosRetornoUsuario(usuario));
+    }
     @RequestMapping(value = "/usuarios/{edv}", method = RequestMethod.GET)
     public ResponseEntity detalharUsuario(@PathVariable String edv) {
         var usuario = repository.getByEdv(edv);

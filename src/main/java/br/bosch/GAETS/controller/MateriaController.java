@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/materias")
 public class MateriaController {
@@ -48,10 +50,20 @@ public class MateriaController {
     @GetMapping
     public ResponseEntity<Page<DadosRetornoMateria>> listarTodasMaterias(@PageableDefault(size = 10) Pageable pageable,
                                                                          Authentication authentication) {
-        validarUsuarioInstrutor.validar(authentication.getName());
-        var page = repository.findAll(pageable).map(DadosRetornoMateria::new);
+        try {
+            validarUsuarioInstrutor.validar(authentication.getName());
+            var page = repository.findAll(pageable).map(DadosRetornoMateria::new);
+            return ResponseEntity.ok(page);
+        }
+        catch (Exception e){
+            if (Objects.equals(e.getMessage(), "Usuário não tem permissão de acesso")) {
+                var usuario = usuarioRepository.getByEdv(authentication.getName());
+                var page = repository.findAllByTurma(pageable, usuario.getTurma());
+                return ResponseEntity.ok(page);
+            }
+            throw new RuntimeException(e.getMessage());
+        }
 
-        return ResponseEntity.ok(page);
     }
 
 

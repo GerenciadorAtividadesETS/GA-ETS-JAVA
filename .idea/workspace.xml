@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87f48a51-fbba-45df-a95a-f25041513d56" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/MateriaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/MateriaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/RespostaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/RespostaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/bosch/GAETS/controller/UsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/controller/RespostaController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/controller/RespostaController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/controller/UsuarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/br/bosch/GAETS/controller/UsuarioController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -47,6 +47,19 @@ public class RespostaController {
 
         return ResponseEntity.ok(resposta);
     }
+//    @GetMapping
+//    public ResponseEntity detalharRespostas(@RequestParam(name = "atividade") int idAtividade,
+//                                           Authentication authentication) {
+//        try {
+//            var atividade = atividadeRepository.getReferenceById(idAtividade);
+//            var resposta = repository.findResposta(authentication.getName(), atividade);
+//            return ResponseEntity.ok(new DadosRetornoResposta(resposta));
+//        }
+//
+//        catch(RuntimeException e) {
+//            throw new RuntimeException("Resposta não encontrada");
+//        }
+//    }
 
 
     // TESTAR
@@ -58,6 +71,7 @@ public class RespostaController {
             if (authentication.getName().equals(edv)) {
                 var atividade = atividadeRepository.getReferenceById(idAtividade);
                 var resposta = repository.findResposta(authentication.getName(), atividade);
+
                 return ResponseEntity.ok(new DadosRetornoResposta(resposta));
             }
             else {
